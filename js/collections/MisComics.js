@@ -6,10 +6,6 @@ Marvel.Collections = Marvel.Collections || {};
     Marvel.Collections.MisComics = Backbone.Collection.extend({
         model: Marvel.Models.Comic,
         
-        initialize: function() {
-            // Esta colección trabaja directamente con Firebase
-        },
-        
         // Añadir un comic a favoritos usando Firebase
         addComic: function(comic) {
             var self = this;
