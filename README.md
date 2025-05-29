@@ -76,7 +76,7 @@ marvel-comics-browser/
 ### 1. Clona el repositorio
 
 ```bash
-git clone [url-del-repositorio]
+git clone https://github.com/Over1185/Marvel_browser-Firebase_Integration.git
 cd marvel-comics-browser
 ```
 
