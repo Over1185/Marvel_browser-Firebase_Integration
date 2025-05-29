@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Marvel Comics Browser</title>
+    <link rel="icon" type="image/png" href="assets/Icon.png">
+    <link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+    <div id="cabecera">
+    </div>
+    
+    <!-- Sección hero con formulario de búsqueda y carrusel -->
+    <div id="hero-section" class="hero-section">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Descubre el Universo Marvel</h1>
+                <p class="hero-subtitle">Explora miles de comics, crea tu colección personal y sumérgete en las historias más épicas</p>
+            </div>
+            
+            <!-- Formulario de búsqueda dentro del hero -->
+            <div id="formBusqueda" class="hero-search">
+            </div>
+            
+            <!-- Carrusel de portadas dinámico -->
+            <div id="carousel-container">
+                <!-- Test: HTML estático para verificar CSS y carga de imágenes -->
+                <div class="carousel-container">
+                    <div class="carousel-track" id="carousel-track">
+                        <div class="comic-cover">
+                            <img src="assets/portada-1.webp" alt="Test Comic 1" loading="lazy">
+                        </div>
+                        <div class="comic-cover">
+                            <img src="assets/portada-2.webp" alt="Test Comic 2" loading="lazy">
+                        </div>
+                        <div class="comic-cover">
+                            <img src="assets/portada-3.webp" alt="Test Comic 3" loading="lazy">
+                        </div>
+                        <div class="comic-cover">
+                            <img src="assets/portada-4.webp" alt="Test Comic 4" loading="lazy">
+                        </div>
+                        <div class="comic-cover">
+                            <img src="assets/portada-5.webp" alt="Test Comic 5" loading="lazy">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Contenedor para resultados -->
+    <div class="main-container">
+        <div id="listado">
+        </div>
+    </div>
+    
+    <!-- Modal overlay para login/register -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div id="modal-content" class="modal-content">
+            <button id="modal-close" class="modal-close">&times;</button>
+            <div id="modal-body">
+                <!-- Contenido del modal se carga aquí -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading overlay de página completa -->
+    <div id="page-loading-overlay" class="page-loading-overlay">
+        <div class="page-loading-content">
+            <div class="page-loading-spinner"></div>
+            <p class="page-loading-text" id="loading-text">Buscando comics...</p>
+            <p class="page-loading-subtitle" id="loading-subtitle">Por favor espera</p>
+        </div>
+    </div>
+
+    <!-- Contenedor para notificaciones popup -->
+    <div id="notification-container" class="notification-container"></div>
+
+    <!-- templates -->
+
+    <!-- Template para el carrusel estático -->
+    <script id="VistaCarouselTmpl" type="text/x-mustache-template">
+        <div class="carousel-container">
+            <div class="carousel-track" id="carousel-track">
+                {{#carouselImages}}
+                <div class="comic-cover">
+                    <img src="{{src}}" alt="{{alt}}" loading="lazy">
+                </div>
+                {{/carouselImages}}
+            </div>
+        </div>
+    </script>
+            </div>
+        </div>
+    </script>
+
+    <!-- Template para mostrar un comic en la lista de resultados -->
+    <script id="VistaComicTmpl" type="text/x-mustache-template">
+        <div class="comic-item" data-id="{{id}}">
+            <div class="comic-thumbnail">
+                {{#thumbnail}}
+                <img src="{{path}}.{{extension}}" alt="{{title}}" style="width: 120px; height: 180px;">
+                {{/thumbnail}}
+            </div>
+            <div class="comic-info">
+                <h3>{{title}}</h3>
+                {{#description}}
+                <p class="comic-description">{{description}}</p>
+                {{/description}}
+                {{^description}}
+                <p class="comic-description">Sin descripción disponible</p>
+                {{/description}}
+                
+                <div class="comic-metadata">
+                    <div class="comic-price">
+                        <span class="label">Precio:</span>
+                        <span class="value">{{salePrice}}</span>
+                    </div>
+                    <div class="comic-date">
+                        <span class="label">Fecha de venta:</span>
+                        <span class="value">{{saleDate}}</span>
+                    </div>
+                </div>
+                
+                <div class="comic-actions">
+                    <button class="btn-detalles" data-id="{{id}}">Ver detalles</button>
+                    {{#isLoggedIn}}
+                    <button class="btn-favorito" data-id="{{id}}">♡ Favorito</button>
+                    {{/isLoggedIn}}
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- Template para mostrar los detalles en modal -->
+    <script id="VistaDetallesComicModalTmpl" type="text/x-mustache-template">
+        <div class="comic-details-modal">
+            <div class="modal-header">
+                <h2>{{title}}</h2>
+            </div>
+            <div class="comic-detail-content-modal">
+                <div class="comic-detail-image-modal">
+                    {{#thumbnail}}
+                    <img src="{{path}}.{{extension}}" alt="{{title}}" style="width: 250px; height: 375px;">
+                    {{/thumbnail}}
+                </div>
+                <div class="comic-detail-info-modal">
+                    {{#description}}
+                    <div class="description">
+                        <h3>Descripción:</h3>
+                        <p>{{description}}</p>
+                    </div>
+                    {{/description}}
+                    
+                    {{#creators.items.length}}
+                    <div class="creators">
+                        <h3>Creadores:</h3>
+                        <ul>
+                            {{#creators.items}}
+                            <li>{{name}} - {{role}}</li>
+                            {{/creators.items}}
+                        </ul>
+                    </div>
+                    {{/creators.items.length}}
+                    
+                    {{#formattedDates.length}}
+                    <div class="dates">
+                        <h3>Fechas:</h3>
+                        <ul>
+                            {{#formattedDates}}
+                            <li>{{type}}: {{date}}</li>
+                            {{/formattedDates}}
+                        </ul>
+                    </div>
+                    {{/formattedDates.length}}
+                    
+                    {{#formattedPrices.length}}
+                    <div class="prices">
+                        <h3>Precios:</h3>
+                        <ul>
+                            {{#formattedPrices}}
+                            <li>{{type}}: ${{price}}</li>
+                            {{/formattedPrices}}
+                        </ul>
+                    </div>
+                    {{/formattedPrices.length}}
+                    
+                    {{#isLoggedIn}}
+                    <div class="detail-actions-modal">
+                        <button class="btn-favorito-detalle" data-id="{{id}}">
+                            {{#isFavorite}}♥ Eliminar de favoritos{{/isFavorite}}
+                            {{^isFavorite}}♡ Añadir a favoritos{{/isFavorite}}
+                        </button>
+                    </div>
+                    {{/isLoggedIn}}
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- Template para mostrar los detalles completos de un comic (para favoritos en página completa) -->
+    <script id="VistaDetallesComicTmpl" type="text/x-mustache-template">
+        <div class="comic-details">
+            <button class="btn-volver">← {{#fromFavorites}}Volver a Mis Comics{{/fromFavorites}}{{^fromFavorites}}Volver a resultados{{/fromFavorites}}</button>
+            <div class="comic-detail-content">
+                <div class="comic-detail-image">
+                    {{#thumbnail}}
+                    <img src="{{path}}.{{extension}}" alt="{{title}}" style="width: 300px; height: 450px;">
+                    {{/thumbnail}}
+                </div>
+                <div class="comic-detail-info">
+                    <h1>{{title}}</h1>
+                    {{#description}}
+                    <div class="description">
+                        <h3>Descripción:</h3>
+                        <p>{{description}}</p>
+                    </div>
+                    {{/description}}
+                    
+                    {{#creators.items.length}}
+                    <div class="creators">
+                        <h3>Creadores:</h3>
+                        <ul>
+                            {{#creators.items}}
+                            <li>{{name}} - {{role}}</li>
+                            {{/creators.items}}
+                        </ul>
+                    </div>
+                    {{/creators.items.length}}
+                    
+                    {{#formattedDates.length}}
+                    <div class="dates">
+                        <h3>Fechas:</h3>
+                        <ul>
+                            {{#formattedDates}}
+                            <li>{{type}}: {{date}}</li>
+                            {{/formattedDates}}
+                        </ul>
+                    </div>
+                    {{/formattedDates.length}}
+                    
+                    {{#formattedPrices.length}}
+                    <div class="prices">
+                        <h3>Precios:</h3>
+                        <ul>
+                            {{#formattedPrices}}
+                            <li>{{type}}: ${{price}}</li>
+                            {{/formattedPrices}}
+                        </ul>
+                    </div>
+                    {{/formattedPrices.length}}
+                    
+                    {{#isLoggedIn}}
+                    {{^fromFavorites}}
+                    <div class="detail-actions">
+                        <button class="btn-favorito-detalle" data-id="{{id}}">♡ Añadir a favoritos</button>
+                    </div>
+                    {{/fromFavorites}}
+                    {{/isLoggedIn}}
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <!-- template para mostrar el formulario de búsqueda -->
+    <script id="VistaBuscarComicsTmpl" type="text/x-mustache-template">
+        <div class="search-form">
+            <form action="#" method="get">
+                <div class="form-group">
+                    <label for="titulo">Buscar comics por título:</label>
+                    <input type="text" id="titulo" name="titulo" placeholder="Ej: Spider-Man, X-Men..." autocomplete="off">
+                </div>
+                <button type="submit" id="botonBuscar" class="btn-primary">
+                    <span class="btn-text">Buscar</span>
+                </button>
+            </form>
+        </div>
+    </script>
+
+    <!-- Template para la cabecera con login/logout -->
+    <script id="VistaCabeceraTmpl" type="text/x-mustache-template">
+        <div class="header">
+            <h1>Marvel Comics Browser</h1>
+            <div class="user-controls">
+                {{#isLoggedIn}}
+                    <span>Bienvenido, {{username}}!</span>
+                    <button id="btn-logout" class="btn-secondary">Logout</button>
+                    <button id="btn-mis-comics" class="btn-secondary">Mis Comics Favoritos</button>
+                {{/isLoggedIn}}
+                {{^isLoggedIn}}
+                    <button id="btn-login" class="btn-primary">Login</button>
+                {{/isLoggedIn}}
+            </div>
+        </div>
+    </script>
+
+    <!-- Template para el formulario de login -->
+    <script id="VistaLoginTmpl" type="text/x-mustache-template">
+        <div class="login-form">
+            <h2>Iniciar Sesión</h2>
+            <form>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="btn-login-submit" class="btn-primary">Entrar</button>
+                    <button type="button" id="btn-show-register" class="btn-secondary">¿No tienes cuenta? Regístrate</button>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <!-- Template para el formulario de registro -->
+    <script id="VistaRegisterTmpl" type="text/x-mustache-template">
+        <div class="login-form">
+            <h2>Crear Cuenta</h2>
+            <form>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Contraseña (mínimo 6 caracteres):</label>
+                    <input type="password" id="password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">Confirmar Contraseña:</label>
+                    <input type="password" id="confirmPassword" required minlength="6">
+                </div>
+                <div class="form-actions">
+                    <button type="button" id="btn-register-submit" class="btn-primary">Crear Cuenta</button>
+                    <button type="button" id="btn-show-login" class="btn-secondary">¿Ya tienes cuenta? Inicia sesión</button>
+                </div>
+            </form>
+        </div>
+    </script>
+
+    <!-- Template para mostrar favoritos en Mis Comics -->
+    <script id="VistaFavoritoTmpl" type="text/x-mustache-template">
+        <div class="comic-item favorito" data-id="{{id}}">
+            <div class="comic-thumbnail">
+                {{#thumbnail}}
+                <img src="{{path}}.{{extension}}" alt="{{title}}" style="width: 120px; height: 180px;">
+                {{/thumbnail}}
+            </div>
+            <div class="comic-info">
+                <h3>{{title}}</h3>
+                {{#description}}
+                <p class="comic-description">{{description}}</p>
+                {{/description}}
+                {{^description}}
+                <p class="comic-description">Sin descripción disponible</p>
+                {{/description}}
+                
+                <div class="comic-metadata">
+                    <div class="comic-price">
+                        <span class="label">Precio:</span>
+                        <span class="value">{{salePrice}}</span>
+                    </div>
+                    <div class="comic-date">
+                        <span class="label">Fecha de venta:</span>
+                        <span class="value">{{saleDate}}</span>
+                    </div>
+                </div>
+                
+                <div class="comic-actions">
+                    <button class="btn-detalles" data-id="{{id}}">Ver detalles</button>
+                    <button class="btn-eliminar-favorito" data-id="{{id}}">🗑️ Eliminar de favoritos</button>
+                </div>
+            </div>
+        </div>    </script>
+    
+    <!-- Template para la sección hero con portadas destacadas -->
+    <script id="VistaHeroTmpl" type="text/x-mustache-template">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Descubre el Universo Marvel</h1>
+                <p class="hero-subtitle">Explora miles de comics, crea tu colección personal y sumérgete en las historias más épicas</p>
+            </div>
+            <div class="featured-comics">
+                <!-- Las portadas se cargarán dinámicamente -->
+            </div>
+        </div>
+    </script>
+
+    <!-- librerías -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/json2.js"></script>
+    <script src="js/vendor/underscore.js"></script>
+    <script src="js/vendor/backbone.js"></script>
+    <script src="js/vendor/backbone.marionette.min.js"></script>
+    <script src="js/vendor/mustache.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+
+    <!-- Configuración de variables de entorno - DEBE IR PRIMERO -->
+    <!-- Para desarrollo local, reemplaza la siguiente línea por: -->
+    <!-- <script src="js/utils/EnvConfig.local.js"></script> -->
+    <script src="js/utils/EnvConfig.js"></script>
+
+    <!-- código de la app -->
+    <script src="js/main.js"></script>
+    <script src="js/models/Comic.js"></script>
+    <script src="js/collections/Comics.js"></script>
+    <script src="js/collections/MisComics.js"></script>
+    <script src="js/services/FirebaseService.js"></script>
+    <script src="js/utils/LoadingNotificationSystem.js"></script>
+    <script src="js/views/VistaCabecera.js"></script>
+    <script src="js/views/VistaHero.js"></script>
+    <script src="js/views/VistaLogin.js"></script>
+    <script src="js/views/VistaRegister.js"></script>
+    <script src="js/views/VistaBuscarComics.js"></script>
+    <script src="js/views/VistaCarousel.js"></script>
+    <script src="js/views/VistaComic.js"></script>
+    <script src="js/views/VistaFavorito.js"></script>
+    <script src="js/views/VistaComics.js"></script>
+    <script src="js/views/VistaDetallesComic.js"></script>
+    <script src="js/views/VistaDetallesComicModal.js"></script>
+    <script src="js/views/VistaGlobal.js"></script>
+
+
+
+
+</body>
+</html>
