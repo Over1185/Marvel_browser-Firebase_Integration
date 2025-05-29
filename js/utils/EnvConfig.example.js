@@ -3,7 +3,6 @@
 (function() {
     'use strict';
 
-    // ⚠️ CONFIGURAR CON TUS CREDENCIALES REALES ANTES DE USAR
     window.ENV = {
         // Marvel API Configuration
         // Obtén estas credenciales en: https://developer.marvel.com/account
@@ -66,7 +65,5 @@
     window.isDevelopment = function() {
         return window.ENV.APP.ENVIRONMENT === 'development';
     };
-
-    console.log('Environment configuration loaded:', window.ENV.APP.NAME, 'v' + window.ENV.APP.VERSION);
 
 })();

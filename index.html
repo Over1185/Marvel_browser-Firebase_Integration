@@ -24,26 +24,7 @@
             
             <!-- Carrusel de portadas dinámico -->
             <div id="carousel-container">
-                <!-- Test: HTML estático para verificar CSS y carga de imágenes -->
-                <div class="carousel-container">
-                    <div class="carousel-track" id="carousel-track">
-                        <div class="comic-cover">
-                            <img src="assets/portada-1.webp" alt="Test Comic 1" loading="lazy">
-                        </div>
-                        <div class="comic-cover">
-                            <img src="assets/portada-2.webp" alt="Test Comic 2" loading="lazy">
-                        </div>
-                        <div class="comic-cover">
-                            <img src="assets/portada-3.webp" alt="Test Comic 3" loading="lazy">
-                        </div>
-                        <div class="comic-cover">
-                            <img src="assets/portada-4.webp" alt="Test Comic 4" loading="lazy">
-                        </div>
-                        <div class="comic-cover">
-                            <img src="assets/portada-5.webp" alt="Test Comic 5" loading="lazy">
-                        </div>
-                    </div>
-                </div>
+                <!-- El carrusel se carga dinámicamente via VistaCarousel.js -->
             </div>
         </div>
     </div>
@@ -198,70 +179,6 @@
         </div>
     </script>
 
-    <!-- Template para mostrar los detalles completos de un comic (para favoritos en página completa) -->
-    <script id="VistaDetallesComicTmpl" type="text/x-mustache-template">
-        <div class="comic-details">
-            <button class="btn-volver">← {{#fromFavorites}}Volver a Mis Comics{{/fromFavorites}}{{^fromFavorites}}Volver a resultados{{/fromFavorites}}</button>
-            <div class="comic-detail-content">
-                <div class="comic-detail-image">
-                    {{#thumbnail}}
-                    <img src="{{path}}.{{extension}}" alt="{{title}}" style="width: 300px; height: 450px;">
-                    {{/thumbnail}}
-                </div>
-                <div class="comic-detail-info">
-                    <h1>{{title}}</h1>
-                    {{#description}}
-                    <div class="description">
-                        <h3>Descripción:</h3>
-                        <p>{{description}}</p>
-                    </div>
-                    {{/description}}
-                    
-                    {{#creators.items.length}}
-                    <div class="creators">
-                        <h3>Creadores:</h3>
-                        <ul>
-                            {{#creators.items}}
-                            <li>{{name}} - {{role}}</li>
-                            {{/creators.items}}
-                        </ul>
-                    </div>
-                    {{/creators.items.length}}
-                    
-                    {{#formattedDates.length}}
-                    <div class="dates">
-                        <h3>Fechas:</h3>
-                        <ul>
-                            {{#formattedDates}}
-                            <li>{{type}}: {{date}}</li>
-                            {{/formattedDates}}
-                        </ul>
-                    </div>
-                    {{/formattedDates.length}}
-                    
-                    {{#formattedPrices.length}}
-                    <div class="prices">
-                        <h3>Precios:</h3>
-                        <ul>
-                            {{#formattedPrices}}
-                            <li>{{type}}: ${{price}}</li>
-                            {{/formattedPrices}}
-                        </ul>
-                    </div>
-                    {{/formattedPrices.length}}
-                    
-                    {{#isLoggedIn}}
-                    {{^fromFavorites}}
-                    <div class="detail-actions">
-                        <button class="btn-favorito-detalle" data-id="{{id}}">♡ Añadir a favoritos</button>
-                    </div>
-                    {{/fromFavorites}}
-                    {{/isLoggedIn}}
-                </div>
-            </div>
-        </div>
-    </script>
-
     <!-- template para mostrar el formulario de búsqueda -->
     <script id="VistaBuscarComicsTmpl" type="text/x-mustache-template">
         <div class="search-form">
@@ -375,23 +292,9 @@
             </div>
         </div>    </script>
     
-    <!-- Template para la sección hero con portadas destacadas -->
-    <script id="VistaHeroTmpl" type="text/x-mustache-template">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1 class="hero-title">Descubre el Universo Marvel</h1>
-                <p class="hero-subtitle">Explora miles de comics, crea tu colección personal y sumérgete en las historias más épicas</p>
-            </div>
-            <div class="featured-comics">
-                <!-- Las portadas se cargarán dinámicamente -->
-            </div>
-        </div>
-    </script>
-
     <!-- librerías -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <script src="js/vendor/jquery.js"></script>
-    <script src="js/vendor/json2.js"></script>
     <script src="js/vendor/underscore.js"></script>
     <script src="js/vendor/backbone.js"></script>
     <script src="js/vendor/backbone.marionette.min.js"></script>
@@ -415,7 +318,6 @@
     <script src="js/services/FirebaseService.js"></script>
     <script src="js/utils/LoadingNotificationSystem.js"></script>
     <script src="js/views/VistaCabecera.js"></script>
-    <script src="js/views/VistaHero.js"></script>
     <script src="js/views/VistaLogin.js"></script>
     <script src="js/views/VistaRegister.js"></script>
     <script src="js/views/VistaBuscarComics.js"></script>
@@ -423,7 +325,6 @@
     <script src="js/views/VistaComic.js"></script>
     <script src="js/views/VistaFavorito.js"></script>
     <script src="js/views/VistaComics.js"></script>
-    <script src="js/views/VistaDetallesComic.js"></script>
     <script src="js/views/VistaDetallesComicModal.js"></script>
     <script src="js/views/VistaGlobal.js"></script>
 

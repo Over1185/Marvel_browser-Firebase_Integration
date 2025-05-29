@@ -14,12 +14,6 @@ var Marvel = {
             this.Constants.API_URL = marvelConfig.API_URL;
             this.Constants.PUBLIC_KEY = marvelConfig.PUBLIC_KEY;
             this.Constants.PRIVATE_KEY = marvelConfig.PRIVATE_KEY;
-            
-            if (isDevelopment()) {
-                console.log('Marvel API configurado desde variables de entorno');
-            }
-        } else {
-            console.warn('EnvConfig no cargado, usando configuración por defecto');
         }
     },
     

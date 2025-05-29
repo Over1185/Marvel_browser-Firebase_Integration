@@ -18,14 +18,6 @@ Marvel.Views = Marvel.Views || {};
             var salePrice = this.model.get('salePrice') || this.model.getSalePrice();
             var saleDate = this.model.get('saleDate') || this.model.getSaleDate();
             
-            console.log('VistaFavorito templateHelpers:', {
-                title: this.model.get('title'),
-                salePrice: salePrice,
-                saleDate: saleDate,
-                modelSalePrice: this.model.get('salePrice'),
-                getSalePrice: this.model.getSalePrice()
-            });
-            
             return {
                 isLoggedIn: Marvel.isLoggedIn,
                 salePrice: salePrice,
@@ -89,7 +81,6 @@ Marvel.Views = Marvel.Views || {};
                 })
                 .catch(function(error) {
                     LoadingNotificationSystem.Loading.hide();
-                    console.error('Error eliminando favorito:', error);
                     
                     LoadingNotificationSystem.Notifications.error(
                         'Error al eliminar',

@@ -45,13 +45,8 @@ Marvel.Collections = Marvel.Collections || {};
             var self = this;
             return Marvel.Services.FirebaseService.getFavorites()
                 .then(function(favorites) {
-                    console.log('=== DEBUG loadFavorites ===');
-                    console.log('Raw favorites from Firebase:', favorites);
-                    
                     // Convertir favoritos a modelos de comics con todos los datos
                     var comicsData = favorites.map(function(fav) {
-                        console.log('Processing favorite:', fav);
-                        
                         // Crear datos básicos del comic
                         var comicData = {
                             id: fav.comicId,
@@ -104,19 +99,14 @@ Marvel.Collections = Marvel.Collections || {};
                         
                         comicData.saleDate = saleDate;
                         
-                        console.log('Processed comic data:', comicData);
-                        
                         return comicData;
                     });
-                    
-                    console.log('Final comics data for reset:', comicsData);
                     
                     self.reset(comicsData);
                     
                     return comicsData;
                 })
                 .catch(function(error) {
-                    console.error('Error cargando favoritos:', error);
                     return [];
                 });
         }

@@ -15,19 +15,15 @@ Marvel.Collections = Marvel.Collections || {};
         parse: function(response, options) {
             // Verificar que la respuesta tenga la estructura esperada
             if (!response.data || !response.data.results) {
-                console.error('Respuesta inesperada de la API:', response);
                 return [];
             }
             
-            console.log(`API respondió con ${response.data.results.length} comics de ${response.data.total} totales`);
             return response.data.results;
         },
         
         buscar: function(titulo, limit, offset) {
             limit = limit || TAM_LISTADO;
             offset = offset || OFFSET_LISTADO;
-            
-            console.log(`Buscando comics con título que empiece por: "${titulo}"`);
             
             var authParams = Marvel.getMarvelAuthParams();
             var params = $.extend({

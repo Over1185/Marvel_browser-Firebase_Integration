@@ -13,9 +13,6 @@ Marvel.Services = Marvel.Services || {};
         loadConfig: function() {
             if (typeof getFirebaseConfig === 'function') {
                 this.config = getFirebaseConfig();
-                if (isDevelopment()) {
-                    console.log('Firebase configurado desde variables de entorno');
-                }
             }
         },
         
@@ -34,10 +31,8 @@ Marvel.Services = Marvel.Services || {};
                 // Configurar el observador de autenticación
                 this.auth.onAuthStateChanged(this.onAuthStateChanged.bind(this));
                 
-                console.log('Firebase inicializado correctamente');
                 return true;
             } catch (error) {
-                console.warn('Firebase no configurado correctamente, usando localStorage:', error);
                 return false;
             }
         },
