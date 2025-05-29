@@ -4,8 +4,6 @@
 
 Una aplicación web moderna para explorar y gestionar tu colección personal de comics de Marvel.
 
-**Languages:** **Español** | [English](README_EN.md)
-
 ## 📱 Características
 
 - **Búsqueda de Comics**: Explora miles de comics de Marvel usando la API oficial
