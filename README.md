@@ -77,7 +77,7 @@ marvel-comics-browser/
 
 ```bash
 git clone https://github.com/Over1185/Marvel_browser-Firebase_Integration.git
-cd marvel-comics-browser
+cd Marvel_browser-Firebase_Integration
 ```
 
 ### 2. Configura las claves de API
@@ -179,32 +179,8 @@ Abre tu navegador en `http://localhost:8000`
 - Cacheo de resultados de API
 - Compresión de assets estáticos
 
-## 🤝 Contribuciones
-
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/nueva-funcionalidad`)
-3. Commit tus cambios (`git commit -am 'Añade nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/nueva-funcionalidad`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver el archivo `LICENSE` para más detalles.
-
 ## 🚨 Notas Importantes
 
 - **Límites de API**: La Marvel API tiene límites de uso diario
 - **Configuración**: Las claves de API no deben compartirse públicamente
 - **Navegadores**: Compatible con navegadores modernos (Chrome, Firefox, Safari, Edge)
-
-## 📞 Soporte
-
-Si encuentras algún problema o tienes sugerencias:
-
-1. Revisa los [Issues existentes](../../issues)
-2. Crea un nuevo Issue con detalles del problema
-3. Incluye información del navegador y pasos para reproducir
-
----
-
-**Desarrollado con ❤️ para fans de Marvel Comics**
