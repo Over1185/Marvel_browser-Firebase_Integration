@@ -1,6 +1,10 @@
 # Marvel Comics Browser
 
+**Languages:** **Español** | [English](README_EN.md)
+
 Una aplicación web moderna para explorar y gestionar tu colección personal de comics de Marvel.
+
+**Languages:** **Español** | [English](README_EN.md)
 
 ## 📱 Características
 
@@ -32,7 +36,7 @@ Una aplicación web moderna para explorar y gestionar tu colección personal de 
 
 ## 📁 Estructura del Proyecto
 
-```
+```text
 marvel-comics-browser/
 ├── index.html                 # Página principal
 ├── styles/
