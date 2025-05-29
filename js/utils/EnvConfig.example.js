@@ -9,7 +9,6 @@
         MARVEL: {
             PUBLIC_KEY: 'your_marvel_public_key_here',
             PRIVATE_KEY: 'your_marvel_private_key_here',
-            API_URL: 'https://gateway.marvel.com/v1/public/comics'
         },
 
         // Firebase Configuration  

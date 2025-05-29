@@ -8,9 +8,6 @@ Marvel.Views = Marvel.Views || {};
         className: 'comic-carousel',
         id: 'featured-comics',
         
-        initialize: function() {
-            // El carrusel es estático, no necesita escuchar eventos
-        },
         
         templateHelpers: function() {
             return {
@@ -32,9 +29,6 @@ Marvel.Views = Marvel.Views || {};
             return images;
         },
         
-        onRender: function() {
-            // El carrusel se renderiza una vez y no cambia
-        }
     });
 
 })();

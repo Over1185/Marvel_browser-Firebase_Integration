@@ -2,9 +2,7 @@
 var Marvel = {
     // Inicializar con configuración por defecto, será sobrescrita por EnvConfig
     Constants: {
-        API_URL: 'https://gateway.marvel.com/v1/public/comics',
-        PUBLIC_KEY: '',
-        PRIVATE_KEY: ''
+        API_URL: 'https://gateway.marvel.com/v1/public/comics'
     },
     
     // Función para inicializar configuración desde variables de entorno

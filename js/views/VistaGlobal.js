@@ -19,14 +19,6 @@ Marvel.Views = Marvel.Views || {};
             'click #modal-close': 'closeModal'
         },
         
-        initialize: function() {
-            // No necesitamos inicializar el carrusel aquí
-        },
-        
-        onRender: function() {
-            // El carrusel se maneja desde main.js
-        },
-        
         showModal: function() {
             $('#modal-overlay').addClass('active');
         },

@@ -123,10 +123,6 @@ Marvel.Views = Marvel.Views || {};
             Marvel.vg.showChildView('carousel', vistaCarousel);
         },
         
-        onInputChange: function() {
-            // Limpiar mensajes previos cuando el usuario empiece a escribir
-            // Ya no es necesario con el sistema de notificaciones popup
-        }
     });
 
 })();
