@@ -47,12 +47,18 @@ Marvel.Views = Marvel.Views || {};
                 
                 var misComics = new Marvel.Collections.MisComics();
                 
-                misComics.loadFavorites().then(function() {
+                misComics.loadFavorites().then(function(favorites) {
                     var vista = new Marvel.Views.VistaComics({
                         collection: misComics,
                         isFavoritesView: true
                     });
                     Marvel.vg.showChildView('carousel', vista);
+                    
+                    // Si no hay favoritos, asegurarse de que se muestre la emptyView
+                    if (misComics.length === 0) {
+                        // Forzar render para mostrar la emptyView
+                        vista.render();
+                    }
                 }).catch(function(error) {
                     console.error('Error al cargar favoritos:', error);
                     Marvel.vg.showChildView('carousel', new Mn.ItemView({

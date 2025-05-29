@@ -21,9 +21,7 @@ Marvel.Views = Marvel.Views || {};
         },
         
         emptyView: Mn.ItemView.extend({
-            template: function() {
-                return '<div class="empty-state"><h3>No hay comics para mostrar</h3><p>Busca comics y márcalos como favoritos para verlos aquí.</p></div>';
-            }
+            template: '#VistaComicsVacioTmpl'
         })
     });
 
