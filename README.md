@@ -47,7 +47,7 @@ marvel-comics-browser/
 │   ├── services/
 │   │   └── FirebaseService.js # Servicios de Firebase
 │   ├── utils/
-│   │   ├── EnvConfig.js      # Configuración
+│   │   ├── EnvConfig.example.js      # Configuración de ejemplo de las variables de entorno
 │   │   └── LoadingNotificationSystem.js # Sistema de notificaciones
 │   ├── vendor/               # Librerías externas
 │   │   ├── backbone.js
